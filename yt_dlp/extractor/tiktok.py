@@ -674,6 +674,11 @@ class TikTokBaseIE(InfoExtractor):
                 # audio-only slideshows have a video duration of 0 and an actual audio duration
                 'duration': ('video', 'duration', {int_or_none}, filter),
                 'timestamp': ('createTime', {int_or_none}),
+                'categories': ('diversificationLabels', {list}),
+                'location_created': ('locationCreated', {str}),
+                'text_language': ('textLanguage', {str}),    # detected language in desc
+                'aigc_label_type': ('aigcLabelType', {str}),    # '1'=True
+                'moderation_aigc_label_type': ('moderationAigcLabelType', {str}),    # '1'=True
             }),
             **traverse_obj(aweme_detail, ('stats', {
                 'view_count': 'playCount',
@@ -682,6 +687,11 @@ class TikTokBaseIE(InfoExtractor):
                 'comment_count': 'commentCount',
                 'save_count': 'collectCount',
             }), expected_type=int_or_none),
+            **traverse_obj(aweme_detail, ('authorStats', {
+                'author_follower_count': ('followerCount', {int_or_none}),
+                'author_heart_count': ('heartCount', {int_or_none}),    #total likes of author
+                'author_video_count': ('videoCount', {int_or_none}),
+            })),
             'thumbnails': [
                 {
                     'id': cover_id,
